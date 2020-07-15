@@ -29,6 +29,6 @@ MonoBehaviour:
   mAtlas: {fileID: 0}
   mReplacement: {fileID: 0}
   mSymbols: []
-  mDynamicFont: {fileID: 12800000, guid: 72c4f9edb85ad452db4cb6f7da07fb42, type: 3}
+  mDynamicFont: {fileID: 0}
   mDynamicFontSize: 16
   mDynamicFontStyle: 0
