@@ -7,10 +7,10 @@ public class Player : MonoBehaviour
     public float speed;
     public float hp;
     public float hpMax;
-    [SerializeField] GameObject GM;
+    public GameObject GM;
     public GM GMst;
 
-    [SerializeField] private UISprite hpBar;
+    public UISprite hpBar;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,16 +20,16 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKey("up"))
+        if (Input.GetKey("up"))
         {
-            transform.position += new Vector3(0, speed * Time.deltaTime,0);
+            transform.position += new Vector3(0, speed * Time.deltaTime, 0);
         }
-        else if(Input.GetKey("down"))
+        else if (Input.GetKey("down"))
         {
             transform.position -= new Vector3(0, speed * Time.deltaTime, 0);
         }
 
-        //TouchMove();
+        TouchMove();
 
     }
 
@@ -40,13 +40,26 @@ public class Player : MonoBehaviour
         hpBar.fillAmount = hp * 0.01f;
         if(hp <=0)
         {
-            GameOver();
+            GMst.GameOver();
         }
     }
 
-    private void GameOver()
+
+    void TouchMove()
     {
-        Debug.Log("GameOver");
-        Time.timeScale = 0;
+        if(Input.touchCount >0)
+        {
+            if (Input.GetTouch(0).deltaPosition.y > 1.0f)
+            {
+                transform.position += new Vector3(0, Mathf.Lerp(0, speed * Time.deltaTime, Time.time), 0);
+            }
+            else if (Input.GetTouch(0).deltaPosition.y < -1.0f)
+            {
+                transform.position -= new Vector3(0, Mathf.Lerp(0, speed * Time.deltaTime, Time.time), 0);
+            }
+        }
+        transform.localPosition = new Vector3(transform.localPosition.x,
+            Mathf.Clamp(transform.localPosition.y, -200.0f, 180.0f), transform.localPosition.z);
+
     }
 }

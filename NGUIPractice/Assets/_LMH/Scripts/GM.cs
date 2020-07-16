@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GM : MonoBehaviour
 {
-    [SerializeField] private GameObject bgSetObj;
-    [SerializeField] private GameObject bgSetObj2;
-    [SerializeField] private GameObject enemySet1;
+    public GameObject bgSetObj;
+    public GameObject bgSetObj2;
+    public GameObject enemySet1;
 
     public List<GameObject> nowEnemyChild = new List<GameObject>();
     public int enemyInt = 0;
@@ -26,10 +27,12 @@ public class GM : MonoBehaviour
     public float timerLim;
     public float timerForSpeed;
 
-    [SerializeField] UILabel Score;
-    public int gameScore;
+    public UILabel Score;
+    public float gameScore;
     public int gameScorePer;
 
+    public GameObject resultUI;
+    public UILabel resultPoint;
 
 
     // Start is called before the first frame update
@@ -49,13 +52,16 @@ public class GM : MonoBehaviour
         bgSetObj.transform.localPosition -= new Vector3(moveSpeed * Time.deltaTime, 0, 0);
         bgSetObj2.transform.localPosition -= new Vector3(moveSpeed2 * Time.deltaTime, 0, 0);
         enemySet1.transform.localPosition -= new Vector3(moveSpeed * Time.deltaTime, 0, 0);
+
+        gameScore += moveSpeed * Time.deltaTime * 0.01f;
+        //Score.text = gameScore.ToString();
+        Score.text = gameScore.ToString("N0");
         if (xPosMoveCheck <= -960)
         {
             xPosMoveCheck = 0;
             bgSetObj.transform.localPosition = new Vector3(960 * -1.0f, 0, 0);
 
-            gameScore += gameScorePer;
-            Score.text = gameScore.ToString();
+    
         }
         if (xPosMoveCheck2 <= -960)
         {
@@ -107,5 +113,20 @@ public class GM : MonoBehaviour
         nowEnemyChild[enemyInt].transform.localPosition =
             new Vector3(nowEnemyChild[enemyInt].transform.localPosition.x,
             yPos, nowEnemyChild[enemyInt].transform.localPosition.z);
+    }
+
+    public void GameOver()
+    {
+        Time.timeScale = 0;
+        resultUI.SetActive(true);
+        resultPoint.text = gameScore.ToString("N0");
+    }
+
+    public void Regame()
+    {
+        resultUI.SetActive(false);
+        Time.timeScale = 1;
+        //Application.LoadLevel("1");
+        SceneManager.LoadScene(0);
     }
 }
